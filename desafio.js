@@ -1,25 +1,27 @@
-console.log('Boas vinhas ao jogo de BlackJack!')
+console.log('Boas vindas ao jogo de BlackJack!')
 
 if(confirm('Quer iniciar uma nova rodada?')){
    // Tirando as duas cartas do usuário
-   const carta1 = comprarCarta()
-   const carta2 = comprarCarta()
-   let somaUsuario = carta1.valor + carta2.valor
+   const cartaUsuario1 = comprarCarta()
+   const cartaUsuario2 = comprarCarta()
+   let somaUsuario = cartaUsuario1.valor + cartaUsuario2.valor
       
    // Tirando as duas cartas do computador
-   const cartapc1 = comprarCarta()
-   const cartapc2 = comprarCarta()
-   let somaComputador = cartapc1.valor + cartapc2.valor
+   const cartaPc1 = comprarCarta()
+   const cartaPc2 = comprarCarta()
+   let somaComputador = cartaPc1.valor + cartaPc2.valor
    
    // array de cartas do usuário
-   let arrayCartas = [carta1.texto, carta2.texto]
+   let CartasUsuario = [cartaUsuario1.texto, cartaUsuario2.texto]
    
    // acrescentar carta e somar enquanto usuário apertar confirm, se passar de 21 ele passa a vez para o computador
-   for(i = 0; confirm(`Suas cartas são ${arrayCartas}. A carta revelada do computador é ${cartapc1.texto}. Deseja comprar mais uma carta?`); i++) {
+   let perguntaUsuario = confirm(`Suas cartas são ${CartasUsuario}. A carta revelada do computador é ${cartaPc1.texto}. Deseja comprar mais uma carta?`)
+
+   for(i = 0; perguntaUsuario; i++) {
       
       let cartaNova = comprarCarta()
       let cartaTexto = cartaNova.texto
-      arrayCartas.push(cartaTexto)
+      CartasUsuario.push(cartaTexto)
       somaUsuario = somaUsuario + cartaNova.valor
 
       if (somaUsuario > 21) {
@@ -28,35 +30,49 @@ if(confirm('Quer iniciar uma nova rodada?')){
    }
    
    // array de cartas do computador
-   let arrayCartasPC = [cartapc1.texto, cartapc2.texto]
+   let CartasPC = [cartaPc1.texto, cartaPc2.texto]
 
    // acrescentar carta e somar até que sua pontuação seja igual ou superior a do usuário
-   for(i = 0; somaComputador >= somaUsuario; i++) {
-      let cartaNova = comprarCarta()
-      let cartaTexto = cartaNova.texto
-      arrayCartasPC.push(cartaTexto)
-
-      somaComputador = somaComputador + cartaNova.valor
+   if (somaUsuario <= 21) {
+      for(i = 0; somaComputador <= somaUsuario; i++) {
+         let cartaNova = comprarCarta()
+         let cartaTexto = cartaNova.texto
+         CartasPC.push(cartaTexto)
+         somaComputador = somaComputador + cartaNova.valor
+         
+         if (somaComputador > 21) {
+            break;
+         }
+      }
    }
-   
+  
    // definir quem ganhou. Computador ganha se tiver soma maior, ou se o usuário tiver passado de 21, senão, usuário ganha. Empata se tiverem valores iguais, 21 ou menor.
-   if (somaComputador > somaUsuario || somaUsuario > 21){
-      console.log(`Suas cartas são ${arrayCartas}. Sua pontuação é ${somaUsuario}.
-      As cartas do computador são ${arrayCartasPC}. A pontuação do computador é ${somaComputador}.
+   if (somaUsuario <= 21 && (somaUsuario > somaComputador || somaComputador > 21 )){
+      console.log(`
+      Suas cartas são ${CartasUsuario}. Sua pontuação é ${somaUsuario}. 
+      As cartas do computador são ${CartasPC}. A pontuação do computador é ${somaComputador}.
+      O Usuário ganhou!`)
+      
+   } else if ((somaComputador > somaUsuario && somaComputador <= 21) || somaUsuario > 21){
+      console.log(`
+      Suas cartas são ${CartasUsuario}. Sua pontuação é ${somaUsuario}.
+      As cartas do computador são ${CartasPC}. A pontuação do computador é ${somaComputador}.
       O computador ganhou!`) 
 
-   } else if (somaUsuario > somaComputador){
-      console.log(`Suas cartas são ${arrayCartas}. Sua pontuação é ${somaUsuario}. 
-      As cartas do computador são ${arrayCartasPC}. A pontuação do computador é ${somaComputador}.
-      O Usuário ganhou!`) 
+   } else if (somaUsuario === somaComputador) {
+      console.log(`
+      Suas cartas são ${CartasUsuario}. Sua pontuação é ${somaUsuario}. 
+      As cartas do computador são ${CartasPC}. A pontuação do computador é ${somaComputador}.
+      Empate!`)
 
    } else {
-      console.log(`Suas cartas são ${arrayCartas}. Sua pontuação é ${somaUsuario}. 
-      As cartas do computador são ${arrayCartasPC}. A pontuação do computador é ${somaComputador}.
-      Empate!`) 
+      console.log(`
+      Suas cartas são ${CartasUsuario}. Sua pontuação é ${somaUsuario}. 
+      As cartas do computador são ${CartasPC}. A pontuação do computador é ${somaComputador}.
+      O usuário e o computador perderam!`)
    }
 
 // caso o primeiro confirm receba resposta negativa
 } else {
-   console.log('O jogo acabou.')
+   alert('O jogo acabou.')
 } 
